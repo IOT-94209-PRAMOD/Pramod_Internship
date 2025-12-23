@@ -1,5 +1,6 @@
 import paho.mqtt.client as mqtt
 import mysql.connector
+from executeQuery import executeQuery
 
 # database connection
 db = mysql.connector.connect(
@@ -25,9 +26,11 @@ def on_message(client, userdata, message):
     else:
         return
 
-    sql = "INSERT INTO sensor_data (sensor_type, value) VALUES (%s, %s)"
-    cursor.execute(sql, (sensor, value))
-    db.commit()
+    # sql = "INSERT INTO sensor_data (sensor_type, value) VALUES (%s, %s)"
+    # cursor.execute(sql, (sensor, value))
+    # db.commit()
+    query =f"insert into smart_home_status (light, fan, temperature) values('{sensor}',{value});"
+    executeQuery(query=query)
 
     print(f"Inserted -> {sensor}: {value}")
 

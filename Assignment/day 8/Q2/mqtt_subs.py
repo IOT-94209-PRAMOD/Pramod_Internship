@@ -1,15 +1,6 @@
 import paho.mqtt.client as mqtt
 import mysql.connector
-
-# database connection
-db = mysql.connector.connect(
-    host="127.0.0.1",
-    user="root",
-    password="root",
-    database="smart_home",
-    use_pure=True
-)
-cursor = db.cursor()
+from executeQuery import executeQuery
 
 # default values
 light_status = "OFF"
@@ -20,6 +11,7 @@ def on_message(client, userdata, message):
     global light_status, fan_status, temperature_value
 
     payload = message.payload.decode()
+    
 
     if message.topic == "home/light":
         light_status = payload
@@ -29,14 +21,9 @@ def on_message(client, userdata, message):
 
     elif message.topic == "home/temp":
         temperature_value = float(payload)
-
-    # insert into SAME table
-    sql = """
-    INSERT INTO appliance_status (light, fan, temperature)
-    VALUES (%s, %s, %s)
-    """
-    cursor.execute(sql, (light_status, fan_status, temperature_value))
-    db.commit()
+    # insert into database
+    query =f"insert into smart_home_status (light, fan, temperature) values('{light_status}','{fan_status}',{temperature_value});"
+    executeQuery(query=query)
 
     print("Inserted:", light_status, fan_status, temperature_value)
 

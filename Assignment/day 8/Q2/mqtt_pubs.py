@@ -10,10 +10,10 @@ while True:
     publisher.publish("home/fan", "OFF")
     publisher.publish("home/temp", round(random.uniform(25, 40), 2))
     print("Light ON | Fan OFF | Temp sent")
-    time.sleep(2)
+    time.sleep(10)
 
     publisher.publish("home/light", "OFF")
     publisher.publish("home/fan", "ON")
     publisher.publish("home/temp", round(random.uniform(25, 40), 2))
     print("Light OFF | Fan ON | Temp sent")
-    time.sleep(2)
+    time.sleep(10)

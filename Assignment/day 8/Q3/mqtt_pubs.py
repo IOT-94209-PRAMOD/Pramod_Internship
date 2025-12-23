@@ -1,18 +1,17 @@
 import paho.mqtt.client as mqtt
-import random
 import time
+import random
 
-publisher = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
-publisher.connect("localhost", 1883)
+client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+client.connect("localhost", 1883)
 
 while True:
-    pulse = random.randint(55, 120)       
-    spo2 = random.randint(90, 100)         
+    pulse = random.randint(55, 120)        # simulate pulse
+    spo2 = random.randint(88, 100)          # simulate blood oxygen
 
-    publisher.publish("health/pulse", pulse)
-    publisher.publish("health/spo2", spo2)
+    client.publish("health/pulse", pulse)
+    client.publish("health/spo2", spo2)
 
-    print(f"Published -> Pulse: {pulse}, SpO2: {spo2}")
+    print("Published -> Pulse:", pulse, "SpO2:", spo2)
 
-    time.sleep(2) 
-    # publish every 2 seconds
+    time.sleep(5)

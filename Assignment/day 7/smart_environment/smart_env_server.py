@@ -14,17 +14,18 @@ def homepage():
 
 
 # CREATE (Insert sensor data)
-@server.post('/smart_agri_iot')
+@server.post('/environment')
 def create_sensor():
     # extract data from form
-    sensor_id = request.form.get('sensor_id')
-    moisture_level = request.form.get('moisture_level')
+    temperature = request.form.get('temperature')
+    humidity = request.form.get('humidity')
+    gas_level = request.form.get('gas_level')
   
 
     # create insert query (explicit column names)
     query = f"""
-        INSERT INTO env_data (sensor_id, moisture_level,date_and_time)
-        VALUES ({sensor_id}, {moisture_level}, '{dt.now()}');
+        INSERT INTO env_data (temperature, humidity, gas_level, date_and_time)
+        VALUES ({temperature}, {humidity}, {gas_level}, '{dt.now()}');
     """
 
     executeQuery(query=query)
@@ -33,39 +34,39 @@ def create_sensor():
 
 
 # READ (Retrieve sensor data)
-@server.get('/smart_agri_iot')
+@server.get('/environment')
 def retrieve_sensors():
-    query = "SELECT * FROM smart_agri_iot;"
+    query = "SELECT * FROM env_data;"
     data = executeSelectQuery(query=query)
 
-    return {"smart_agri_iot": data}
+    return {"env_data": data}
 
 
 # UPDATE (Update humidity)
-@server.put('/smart_agri_iot')
+@server.put('/environment')
 def update_sensor():
-    sensor_id = request.form.get('sensor_id')
-    moisture_level = request.form.get('moisture_level')
+    id = request.form.get('id')
+    humidity = request.form.get('humidity')
 
     query = f"""
-        UPDATE smart_agri_iot
-        SET moisture_level = {moisture_level}
-        WHERE sensor_id = {sensor_id};
+        UPDATE env_data
+        SET humidity = {humidity}
+        WHERE id = {id};
     """
 
     executeQuery(query=query)
 
-    return "moisture_level updated successfully"
+    return "humidity updated successfully"
 
 
 # DELETE (Delete by temperature)
-@server.delete('/smart_agri_iot')
+@server.delete('/environment')
 def delete_sensor():
-    sensor_id = request.form.get('sensor_id')
+    id = request.form.get('id')
 
     query = f"""
-        DELETE FROM smart_agri_iot
-        WHERE sensor_id = {sensor_id};
+        DELETE FROM env_data
+        WHERE id = {id};
     """
 
     executeQuery(query=query)

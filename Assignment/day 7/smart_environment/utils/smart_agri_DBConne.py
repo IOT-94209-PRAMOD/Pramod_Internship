@@ -7,7 +7,7 @@ def getBDConnection():
         port = 3306,
         user = "root",
         password = "root",
-        database = "healthcare_iot ",
+        database = "environment",
         use_pure = True
     )
 
